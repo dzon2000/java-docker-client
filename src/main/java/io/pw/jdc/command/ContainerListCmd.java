@@ -6,23 +6,17 @@ import io.pw.jdc.socket.SocketRequest;
 /**
  * Created by pwykowski
  */
-public class VersionCmd implements Command {
+public class ContainerListCmd implements Command {
 	@Override
 	public String execute(SocketRequest socketRequest) {
 		final HttpRequest request = new HttpRequest.Builder()
 				.GET()
 				.ofHost("localhost")
-				.ofPath("/version")
+				.ofPath("/containers/json")
 				.build();
 		try {
 			String response = socketRequest.send(request.asText());
-			final int lastEnter = response.lastIndexOf("\n");
-			int lastIdx = 0;
-			int idx;
-			while ((idx = response.indexOf("\n", lastIdx)) < lastEnter) {
-				lastIdx = idx + 1;
-			}
-			return response.substring(lastIdx);
+			return response;
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
