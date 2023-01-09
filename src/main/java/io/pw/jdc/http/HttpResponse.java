@@ -42,12 +42,13 @@ public record HttpResponse(int statusCode, Map<String, String> headers, String b
 		String line;
 		StringBuilder body = new StringBuilder();
 		try {
-			for (line = reader.readLine(); !"0".equals(line) && !"".equals(line); line = reader.readLine()) {
+			for (line = reader.readLine(); line != null && !"0".equals(line) && !"".equals(line); line = reader.readLine()) {
 				int byteCount = Integer.parseInt(line, 16);
 				char[] content = new char[byteCount];
 				reader.read(content);
 				body.append(content);
 				int endOfLine = reader.read();
+				endOfLine = reader.read();
 			}
 		} catch (IOException ex) {
 			throw new RuntimeException(ex);
